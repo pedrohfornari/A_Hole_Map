@@ -1,0 +1,6 @@
+export CXX=g++
+export CC=gcc
+export SYSTEMC=/home/ufsc/eda/systemc/systemc-2.3.1
+export SCV=/home/ufsc/eda/scv-2.0.0
+export LD_LIBRARY_PATH=/home/ufsc/eda/scv-2.0.0/lib-linux:/home/ufsc/eda/systemc/systemc-2.3.1/lib-linux64
+

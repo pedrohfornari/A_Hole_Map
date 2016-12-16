@@ -1,0 +1,133 @@
+#!/bin/bash
+
+#########################################
+#               Variables               #
+#########################################
+
+NFS_SERVER=150.162.11.206:/home/ufsc/EDATools/
+NFS_LOCAL=/usr/EDATools
+
+
+IC_PATH=$NFS_LOCAL/cadence/IC617
+INCISIVE_PATH=$NFS_LOCAL/cadence/INCISIVE152
+GENUS_PATH=$NFS_LOCAL/cadence/GENUS152
+INNOVUS_PATH=$NFS_LOCAL/cadence/INNOVUS152
+STRATUS_PATH=$NFS_LOCAL/cadence/STRATUS152
+MMSIMHOME_PATH=$NFS_LOCAL/cadence/MMSIM151
+MUNEDA_PATH=$NFS_LOCAL/muneda
+
+####VIRTUOSO#####
+IC6_bin=$IC_PATH/bin/
+IC6_bin_64=$IC_PATH/bin/64bit/
+IC6_dfII=$IC_PATH/tools/dfII/bin/64bit/
+IC6_tools=$IC_PATH/tools/bin/
+OA_HOME=$IC_PATH/oa_v22.50.045
+LIB_64=/usr/lib64
+VIRTUOSO_LIB1=$OA_HOME/lib/linux_rhel50_gcc48x_64/opt
+VIRTUOSO_LIB2=$IC_PATH/tools.lnx86/lib/64bit
+
+####INCISIVE####
+VRST_HOME=$INCISIVE_PATH
+SPECMAN_PATH=$INCISIVE_PATH
+PATH=$INCISIVE_PATH/tools.lnx86/bin:$PATH
+LD_LIBRARY_PATH=:$INCISIVE_PATH/tools.lnx86/systemc/lib:$LD_LIBRARY_PATH
+
+
+#########################################
+#     Setting FOLDERS and LICENSE       #
+#########################################
+
+printf '\n'
+if [[ -z $LM_LICENSE_FILE ]]; then
+    export  LM_LICENSE_FILE=5280@150.162.10.199:27000@150.162.11.206
+else 
+    printf '\e[1;34m%-6s\e[m\n' 'LM_LICENSE_FILE already set: to clear variable use unset <variable>'
+    printf '\n'
+fi
+
+if mount | grep $NFS_LOCAL > /dev/null; then 
+    printf '\e[1;36m%-6s\e[m\n' '+==========================+'
+    printf '\e[1;36m%-6s\e[m\n' '|     Already Mounted      |'
+    printf '\e[1;36m%-6s\e[m\n' '+==========================+'
+    printf '\n'
+else 
+    sudo mount -t nfs $NFS_SERVER $NFS_LOCAL && {
+	    printf '\e[1;36m%-6s\e[m\n' '+==========================+'
+	    printf '\e[1;36m%-6s\e[m\n' '|         Mounted          |'
+	    printf '\e[1;36m%-6s\e[m\n' '+==========================+'
+	    printf '\n'
+    }	
+fi
+
+#########################################
+#     Setting Env Variables INCISIVE    #
+#########################################
+
+printf '\e[1;36m%-6s\e[m\n' '+==========================+'
+printf '\e[1;36m%-6s\e[m\n' '| Set. Env. Incisive       |'
+printf '\e[1;36m%-6s\e[m\n' '+==========================+'
+printf '\n'
+
+export PATH
+export VRST_HOME
+export SPECMAN_PATH
+source $VRST_HOME/env.sh -64bit
+export LD_LIBRARY_PATH
+
+#########################################
+#     Setting Env Variables Virtuoso    #
+#########################################
+
+printf '\e[1;36m%-6s\e[m\n' '+==========================+'
+printf '\e[1;36m%-6s\e[m\n' '| Set. Env. Virtuoso       |'
+printf '\e[1;36m%-6s\e[m\n' '+==========================+'
+printf '\n'
+
+export PATH=$IC6_bin:$IC6_dfII:$IC6_bin_64:$IC6_tools:$PATH
+export OA_HOME
+export LD_LIBRARY_PATH=$LIB_64:$VIRTUOSO_LIB1:$VIRTUOSO_LIB2:$LD_LIBRARY_PATH
+
+export MMSIMHOME=$MMSIMHOME_PATH 
+export PATH=$MMSIMHOME/tools.lnx86/bin:$PATH
+
+
+#################################################################
+#     Setting Env Variables Genus, Innovus, Stratus, MunEDA     #
+#################################################################
+
+
+printf '\e[1;36m%-6s\e[m\n' '+============================================+'
+printf '\e[1;36m%-6s\e[m\n' '| Set. Env. Genus, Innovus, Stratus, MunEDA  |'
+printf '\e[1;36m%-6s\e[m\n' '+============================================+'
+printf '\n'
+
+
+####GENUS####
+PATH=$GENUS_PATH/tools.lnx86/bin:$PATH
+
+####INNOVUS####
+PATH=$INNOVUS_PATH/tools.lnx86/bin:$PATH
+
+####STRATUS####
+PATH=$STRATUS_PATH/tools.lnx86/bin:$PATH
+
+####MUNEDA####
+PATH=$MUNEDA_PATH/wicked/wicked6.7/wicked6.7/bin:$PATH
+
+####CADENCEHELP####
+PATH=$NFS_LOCAL/cadence/CADENCEHELP:$PATH
+
+#################################################################
+printf '\n' 
+printf '\e[1;36m%-6s\e[m\n' 'Dont close this terminal window'
+#################################################################
+
+#####################TO INSTALL##################################
+
+#sudo yum install openssl098e.x86_64
+
+#AMSHOME=$(cds_root irun)
+#CDSHOME=$(cds_root virtuoso)
+
+#export AMSHOME
+#export CDSHOME
