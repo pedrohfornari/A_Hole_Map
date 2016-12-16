@@ -13,3 +13,4 @@ error, cause the timepiece marked by hand was not that precisely.
 
 The reader will be able to find more information reading our First Report, which was made testing out 
 a matrix of ultrassonic distance sensors, which is only in portuguese by now.
+We also developped an Doxyfile for this project, so the reader can have a overview of the code there.
